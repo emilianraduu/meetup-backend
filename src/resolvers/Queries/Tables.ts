@@ -11,7 +11,8 @@ export const getWaiterTables = queryField('waiterTables', {
         where: { waiterId: ctx.userId },
         include: {
           location: true,
-          waiter: true
+          waiter: true,
+          reservations: true,
         }
       })
     } catch (e) {
