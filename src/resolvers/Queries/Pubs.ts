@@ -41,6 +41,7 @@ export const getPubs = queryField('pubs', {
       })
       return newPubs
     } catch (e) {
+      console.log(e)
       handleError(errors.invalidUser)
     }
   }
