@@ -3,6 +3,7 @@ import { compare, hash } from 'bcrypt'
 import { findPub, generateAccessToken, handleError } from '../../utils/helpers'
 import { APP_SECRET, errors, user_status } from '../../utils/constants'
 import { verify } from 'jsonwebtoken'
+import sgMail from '@sendgrid/mail'
 
 export const user = extendType({
   type: 'Mutation',
@@ -59,11 +60,29 @@ export const user = extendType({
             }
           })
           const accessToken = generateAccessToken(user.id)
+          sgMail.setApiKey(process.env.SENDGRID_KEY)
+          const msg = {
+            to: email,
+            from:  'emiradu98@icloud.com',
+            subject: 'Successfully registered!',
+            text: ' You are ready to use the app',
+            html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+            template_id: 'd-c4fa49ac38624b9bb2bb2c86dcc5be15'
+          }
+          sgMail
+            .send(msg)
+            .then(() => {
+              console.log('Email sent')
+            })
+            .catch((error) => {
+              console.error(error)
+            })
           return {
             accessToken,
             user
           }
         } catch (e) {
+          console.log(e)
           handleError(errors.userAlreadyExists)
         }
       }
