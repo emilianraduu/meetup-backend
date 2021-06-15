@@ -36,12 +36,8 @@ export const Exists = objectType({
   name: 'Exists',
   definition(t) {
     t.boolean('exist')
+    t.field('user', { type: 'User' })
     t.boolean('hasPassword')
-    t.string('email')
-    t.string('firstName')
-    t.string('id')
-    t.string('lastName')
-    t.string('photo')
   }
 })
 

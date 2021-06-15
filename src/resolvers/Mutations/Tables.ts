@@ -51,34 +51,34 @@ export const tables = extendType({
         }
       }
     })
-    t.field('updateTable', {
-      type: 'Table',
-      args: {
-        dayOfWeek: stringArg(),
-        timeStart: stringArg(),
-        timeEnd: stringArg(),
-        pubId: nonNull(intArg()),
-        id: nonNull(intArg())
-      },
-      async resolve(_parent, { id, pubId, dayOfWeek, timeStart, timeEnd }, ctx) {
-        const pub = await findPub(ctx, pubId)
-        if (pub?.ownerId === ctx.userId) {
-          try {
-            return await ctx.prisma.schedule.update({
-              where: { id },
-              data: {
-                dayOfWeek,
-                timeStart,
-                timeEnd
-              }
-            })
-          } catch (e) {
-            handleError(errors.scheduleAlreadyExists)
-          }
-        } else {
-          handleError(errors.pubNotFound)
-        }
-      }
-    })
+    // t.field('updateTable', {
+    //   type: 'Table',
+    //   args: {
+    //     dayOfWeek: stringArg(),
+    //     timeStart: stringArg(),
+    //     timeEnd: stringArg(),
+    //     pubId: nonNull(intArg()),
+    //     id: nonNull(intArg())
+    //   },
+    //   async resolve(_parent, { id, pubId, dayOfWeek, timeStart, timeEnd }, ctx) {
+    //     const pub = await findPub(ctx, pubId)
+    //     if (pub?.ownerId === ctx.userId) {
+    //       try {
+    //         return await ctx.prisma.schedule.update({
+    //           where: { id },
+    //           data: {
+    //             dayOfWeek,
+    //             timeStart,
+    //             timeEnd
+    //           }
+    //         })
+    //       } catch (e) {
+    //         handleError(errors.scheduleAlreadyExists)
+    //       }
+    //     } else {
+    //       handleError(errors.pubNotFound)
+    //     }
+    //   }
+    // })
   }
 })

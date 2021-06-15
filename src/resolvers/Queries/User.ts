@@ -1,4 +1,6 @@
 import { nonNull, queryField, stringArg } from 'nexus'
+import { handleError } from '../../utils/helpers'
+import { errors } from '../../utils/constants'
 
 export const me = queryField('me', {
   type: 'User',
@@ -22,7 +24,7 @@ export const me = queryField('me', {
             pub: true
           }
         },
-        pub: { include: {locations: true} },
+        pub: { include: { locations: true } },
         tables: {
           include: {
             reservations: true,
@@ -40,14 +42,17 @@ export const exists = queryField('exists', {
     email: nonNull(stringArg())
   },
   async resolve(_parent, { email }, ctx) {
-
-    const user = await ctx.prisma.user.findUnique({
-      where: { email: email }
-    })
-    if (user) {
-      return { exist: true, ...user, hasPassword: !!user.password }
-    } else {
-      return { exist: false, email: email }
+    try {
+      const user = await ctx.prisma.user.findUnique({
+        where: { email: email }
+      })
+      if (user) {
+        return { exist: true, hasPassword: !!user.password, user: { ...user, email: email} }
+      } else {
+        return { exist: false }
+      }
+    } catch (e) {
+      handleError(errors.userAlreadyExists)
     }
   }
 })
