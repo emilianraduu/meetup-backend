@@ -1,10 +1,9 @@
-import { intArg, nonNull, queryField } from 'nexus'
+import { intArg, list, nonNull, queryField } from 'nexus'
 import { errors } from '../../utils/constants'
 import { handleError } from '../../utils/helpers'
 
 export const getTable = queryField('table', {
-  type: 'Table',
-  list: true,
+  type: list('Table'),
   args: {
     locationId: nonNull(intArg())
   },

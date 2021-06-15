@@ -1,10 +1,9 @@
-import { intArg, nonNull, queryField } from 'nexus'
+import { intArg, list, nonNull, queryField } from 'nexus'
 import { errors } from '../../utils/constants'
 import { handleError } from '../../utils/helpers'
 
 export const getReservations = queryField('reservations', {
-  type: 'Reservation',
-  list: true,
+  type: list('Reservation'),
   args: {
     id: intArg(),
     userId: intArg(),
