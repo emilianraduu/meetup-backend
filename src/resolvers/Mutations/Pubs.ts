@@ -49,8 +49,9 @@ export const pub = extendType({
         longitude: floatArg(),
         currency: stringArg(),
         id: nonNull(intArg()),
+        visible: booleanArg(),
       },
-      async resolve(_parent, {  id, name, address, images, latitude, longitude, currency }, ctx) {
+      async resolve(_parent, {  id, name, address, images, latitude, longitude, currency, visible }, ctx) {
         try {
           const pub = await findPub(ctx, id)
 
@@ -58,7 +59,7 @@ export const pub = extendType({
             return await ctx.prisma.pub.update({
               where: { id: id },
               data: {
-                name, address, images, latitude, longitude, currency
+                name, address, images, latitude, longitude, currency, visible
               }
             })
           } else {
