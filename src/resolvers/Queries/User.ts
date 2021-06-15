@@ -49,7 +49,7 @@ export const exists = queryField('exists', {
       if (user) {
         return { exist: true, hasPassword: !!user.password, user: { ...user, email: email} }
       } else {
-        return { exist: false, user: {email: email} }
+        return { exist: false, user: {email: email, id: -1} }
       }
     } catch (e) {
       handleError(errors.userAlreadyExists)
