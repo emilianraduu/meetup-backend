@@ -1,6 +1,4 @@
 # env vars
-.env*
-!.env.example
 
 # nexus/prisma
 *.db
