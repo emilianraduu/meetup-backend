@@ -1,0 +1,164 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator prisma {
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native"]
+  previewFeatures = ["orderByRelation"]
+}
+
+model Notification {
+  id      Int    @id @default(autoincrement())
+  userId  Int
+  user    User   @relation(name: "NotifiedUser", fields: [userId], references: [id])
+  message String
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  password      String?
+  lastName      String?
+  firstName     String?
+  photo         String?
+  pubs          Pub[]          @relation("Owner")
+  reviews       Review[]       @relation("Reviewer")
+  status        String         @default("CLIENT")
+  pub           Pub?           @relation(name: "Waiter", fields: [pubId], references: [id])
+  pubId         Int?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  reservations  Reservation[]  @relation("UserReservation")
+  tables        Table[]        @relation("TableWaiter")
+  notifications Notification[] @relation("NotifiedUser")
+}
+
+model Pub {
+  id              Int           @id @default(autoincrement())
+  ownerId         Int
+  owner           User          @relation(name: "Owner", fields: [ownerId], references: [id])
+  reservations    Reservation[] @relation("PubReservation")
+  schedules       Schedule[]
+  address         String        @unique
+  latitude        Float
+  longitude       Float
+  description     String?
+  visible         Boolean       @default(true)
+  avgRating       Float         @default(0)
+  numberOfRatings Int           @default(0)
+  reservationTime Float         @default(2.0)
+  priceAvg        Int           @default(0)
+  images          String[]
+  name            String        @unique
+  reviews         Review[]      @relation("ReviewedPub")
+  locations       Location[]    @relation("Pub")
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  currency        String?
+  menu            Menu?         @relation("Menu")
+  waiters         User[]        @relation("Waiter")
+}
+
+model Menu {
+  id        Int           @id @default(autoincrement())
+  pubId     Int
+  pub       Pub           @relation(name: "Menu", fields: [pubId], references: [id])
+  sections  MenuSection[] @relation("Sections")
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model MenuSection {
+  id        Int        @id @default(autoincrement())
+  name      String
+  image     String?
+  items     MenuItem[] @relation("Items")
+  menuId    Int
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  menu      Menu       @relation(name: "Sections", fields: [menuId], references: [id])
+}
+
+model MenuItem {
+  id          Int         @id @default(autoincrement())
+  sectionId   Int
+  section     MenuSection @relation("Items", fields: [sectionId], references: [id])
+  name        String
+  image       String?
+  price       Float?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  description String
+}
+
+model Schedule {
+  id        Int      @id @default(autoincrement())
+  pubId     Int?
+  dayOfWeek String
+  timeStart String
+  timeEnd   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  pub       Pub?     @relation(fields: [pubId], references: [id])
+}
+
+model Reservation {
+  id         Int      @id @default(autoincrement())
+  tableId    Int
+  locationId Int
+  pub        Pub      @relation(name: "PubReservation", fields: [pubId], references: [id])
+  pubId      Int
+  date       DateTime
+  finished   Boolean  @default(false)
+  endHour    String?
+  userId     Int
+  user       User     @relation(name: "UserReservation", fields: [userId], references: [id])
+  location   Location @relation(name: "LocationReservation", fields: [locationId], references: [id])
+  table      Table    @relation("TableReservation", fields: [tableId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Location {
+  id           Int           @id @default(autoincrement())
+  pubId        Int
+  name         String
+  tables       Table[]       @relation("Locate")
+  pub          Pub           @relation(name: "Pub", fields: [pubId], references: [id])
+  rows         Int           @default(0)
+  columns      Int           @default(0)
+  reservations Reservation[] @relation("LocationReservation")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Table {
+  id           Int           @id @default(autoincrement())
+  count        Int
+  blocked      Boolean       @default(false)
+  reason       String?
+  position     Int           @default(0)
+  name         String?
+  location     Location      @relation(name: "Locate", fields: [locationId], references: [id])
+  locationId   Int
+  reservations Reservation[] @relation("TableReservation")
+  waiter       User?         @relation(name: "TableWaiter", fields: [waiterId], references: [id])
+  waiterId     Int?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  pubId     Int
+  userId    Int
+  rating    Int
+  comment   String
+  user      User     @relation(name: "Reviewer", fields: [userId], references: [id])
+  pub       Pub      @relation(name: "ReviewedPub", fields: [pubId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  anonymous Boolean  @default(false)
+}

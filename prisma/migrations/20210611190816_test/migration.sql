@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Pub" ADD COLUMN     "reservationTime" DOUBLE PRECISION NOT NULL DEFAULT 2.0;
