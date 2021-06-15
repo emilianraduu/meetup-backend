@@ -1,17 +1,14 @@
-
 import { intArg, list, nonNull, queryField } from 'nexus'
 import { errors } from '../../utils/constants'
 import { handleError } from '../../utils/helpers'
 
-export const getTable = queryField('table', {
+
+export const getWaiterTables = queryField('waiterTables', {
   type: list('Table'),
-  args: {
-    locationId: nonNull(intArg())
-  },
-  async resolve(_parent, { locationId }, ctx) {
+  async resolve(_parent, _args, ctx) {
     try {
       return await ctx.prisma.table.findMany({
-        where: { locationId },
+        where: { waiterId: ctx.userId },
         include: {
           location: true,
           waiter: true
