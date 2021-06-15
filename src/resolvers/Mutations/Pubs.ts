@@ -1,4 +1,4 @@
-import { booleanArg, extendType, floatArg, intArg, nonNull, stringArg } from 'nexus'
+import { booleanArg, extendType, floatArg, intArg, list, nonNull, stringArg } from 'nexus'
 import { findPub, findUser, handleError } from '../../utils/helpers'
 import { errors, user_status } from '../../utils/constants'
 
@@ -10,7 +10,7 @@ export const pub = extendType({
       args: {
         name: nonNull(stringArg()),
         address: nonNull(stringArg()),
-        images: stringArg({ list: true }),
+        images: list(stringArg()),
         latitude: nonNull(floatArg()),
         longitude: nonNull(floatArg()),
         currency: stringArg()
