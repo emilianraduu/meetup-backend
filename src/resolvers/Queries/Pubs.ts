@@ -28,7 +28,7 @@ export const getPubs = queryField('pubs', {
         }
       })
       const newPubs: Pub[] | PromiseLike<Pub[]> = []
-      pubs.forEach((pub) => {
+      pubs.forEach((pub: Pub) => {
         if (latitude && longitude) {
           const distance =
             getDistance({ latitude, longitude }, { latitude: pub.latitude, longitude: pub.longitude })
