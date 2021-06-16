@@ -70,5 +70,26 @@ export const pub = extendType({
         }
       }
     })
+    t.field('deletePub', {
+      type: 'Pub',
+      args: {
+        id: nonNull(intArg()),
+      },
+      async resolve(_parent, {  id }, ctx) {
+        try {
+          const pub = await findPub(ctx, id)
+
+          if (pub.ownerId === ctx.userId) {
+            return await ctx.prisma.pub.delete({
+              where: { id: id },
+            })
+          } else {
+            return handleError(errors.invalidUser)
+          }
+        } catch(e){
+          handleError(errors.notAuthenticated)
+        }
+      }
+    })
   }
 })
