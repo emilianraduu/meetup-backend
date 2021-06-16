@@ -22,6 +22,10 @@ export const locations = extendType({
                 name,
                 rows,
                 columns
+              },
+              includes: {
+                table:true,
+                reservations: true
               }
             })
           } catch (e) {
