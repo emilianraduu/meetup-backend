@@ -10,10 +10,15 @@ generator prisma {
 }
 
 model Notification {
-  id      Int    @id @default(autoincrement())
-  userId  Int
-  user    User   @relation(name: "NotifiedUser", fields: [userId], references: [id])
-  message String
+  id            Int         @id @default(autoincrement())
+  userId        Int
+  user          User        @relation(name: "NotifiedUser", fields: [userId], references: [id])
+  message       String
+  read          Boolean     @default(false)
+  reservation   Reservation @relation("Reservation", fields: [reservationId], references: [id])
+  reservationId Int
+  waiter        User        @relation(name: "WaiterNotif", fields: [waiterId], references: [id])
+  waiterId      Int
 }
 
 model User {
@@ -33,6 +38,7 @@ model User {
   reservations  Reservation[]  @relation("UserReservation")
   tables        Table[]        @relation("TableWaiter")
   notifications Notification[] @relation("NotifiedUser")
+  waiterNotifications  Notification[] @relation("WaiterNotif")
 }
 
 model Pub {
@@ -105,20 +111,21 @@ model Schedule {
 }
 
 model Reservation {
-  id         Int      @id @default(autoincrement())
-  tableId    Int
-  locationId Int
-  pub        Pub      @relation(name: "PubReservation", fields: [pubId], references: [id])
-  pubId      Int
-  date       DateTime
-  finished   Boolean  @default(false)
-  endHour    String?
-  userId     Int
-  user       User     @relation(name: "UserReservation", fields: [userId], references: [id])
-  location   Location @relation(name: "LocationReservation", fields: [locationId], references: [id])
-  table      Table    @relation("TableReservation", fields: [tableId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id           Int           @id @default(autoincrement())
+  tableId      Int
+  locationId   Int
+  pub          Pub           @relation(name: "PubReservation", fields: [pubId], references: [id])
+  pubId        Int
+  date         DateTime
+  finished     Boolean       @default(false)
+  endHour      String?
+  userId       Int
+  user         User          @relation(name: "UserReservation", fields: [userId], references: [id])
+  location     Location      @relation(name: "LocationReservation", fields: [locationId], references: [id])
+  table        Table         @relation("TableReservation", fields: [tableId], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  notification Notification? @relation("Reservation")
 }
 
 model Location {

@@ -26,8 +26,13 @@ export const Notification = objectType({
   definition(t) {
     t.int('id')
     t.int('userId')
+    t.int('waiterId')
+    t.field('waiter', {type: 'User'})
     t.field('user', { type: 'User' })
     t.string('message')
+    t.boolean('read')
+    t.field('reservation', {type: 'Reservation'})
+    t.int('reservationId')
   }
 })
 

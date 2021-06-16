@@ -108,6 +108,7 @@ export const getPub = queryField('pub', {
               }
             }
           },
+          schedule: true,
           waiters: true
         }
       })

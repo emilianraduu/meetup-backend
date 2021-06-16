@@ -12,17 +12,35 @@ export const reservations = extendType({
         tableId: nonNull(intArg()),
         locationId: nonNull(intArg()),
         date: nonNull(stringArg()),
-        endHour: stringArg()
+        endHour: stringArg(),
+        waiterId: intArg()
       },
-      async resolve(_parent, { pubId, tableId, locationId, endHour, date }, ctx) {
+      async resolve(_parent, { waiterId, pubId, tableId, locationId, endHour, date }, ctx) {
         const pub = await findPub(ctx, pubId)
         if (pub) {
           try {
-            return await ctx.prisma.reservation.create({
+            const reservation = await ctx.prisma.reservation.create({
               data: {
                 pubId, tableId, locationId, endHour, userId: ctx.userId, date
+              },
+              include: {
+                location: true,
+                pub: true,
+                table: true
               }
             })
+            await ctx.prisma.notification.create({
+              data: {
+                waiterId: waiterId,
+                userId: ctx.userId,
+                reservationId: reservation.id
+              }
+            })
+            ctx.pubsub.publish('Notificaiton')
+            return reservation
+          //  creare notificare in tabel
+          //  trimirere cu ws la waiterId
+          //  waiterId
           } catch (e) {
             console.log(e)
             handleError(errors.locationNotFound)
