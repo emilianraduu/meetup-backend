@@ -108,7 +108,7 @@ export const getPub = queryField('pub', {
               }
             }
           },
-          schedule: true,
+          schedules: true,
           waiters: true
         }
       })
@@ -119,6 +119,7 @@ export const getPub = queryField('pub', {
 
       return { ...pub, distance }
     } catch (e) {
+      console.log(e)
       handleError(errors.pubNotFound)
     }
   }
