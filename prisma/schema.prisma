@@ -22,23 +22,23 @@ model Notification {
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
-  email         String         @unique
-  password      String?
-  lastName      String?
-  firstName     String?
-  photo         String?
-  pubs          Pub[]          @relation("Owner")
-  reviews       Review[]       @relation("Reviewer")
-  status        String         @default("CLIENT")
-  pub           Pub?           @relation(name: "Waiter", fields: [pubId], references: [id])
-  pubId         Int?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  reservations  Reservation[]  @relation("UserReservation")
-  tables        Table[]        @relation("TableWaiter")
-  notifications Notification[] @relation("NotifiedUser")
-  waiterNotifications  Notification[] @relation("WaiterNotif")
+  id                  Int            @id @default(autoincrement())
+  email               String         @unique
+  password            String?
+  lastName            String?
+  firstName           String?
+  photo               String?
+  pubs                Pub[]          @relation("Owner")
+  reviews             Review[]       @relation("Reviewer")
+  status              String         @default("CLIENT")
+  pub                 Pub?           @relation(name: "Waiter", fields: [pubId], references: [id])
+  pubId               Int?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  reservations        Reservation[]  @relation("UserReservation")
+  tables              Table[]        @relation("TableWaiter")
+  notifications       Notification[] @relation("NotifiedUser")
+  waiterNotifications Notification[] @relation("WaiterNotif")
 }
 
 model Pub {
@@ -46,7 +46,7 @@ model Pub {
   ownerId         Int
   owner           User          @relation(name: "Owner", fields: [ownerId], references: [id])
   reservations    Reservation[] @relation("PubReservation")
-  schedules       Schedule[]
+  schedule        Schedule[]
   address         String        @unique
   latitude        Float
   longitude       Float

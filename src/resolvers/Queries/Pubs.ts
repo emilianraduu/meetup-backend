@@ -84,6 +84,7 @@ export const getPub = queryField('pub', {
       const pub = await ctx.prisma.pub.findUnique({
         where: { id },
         include: {
+          schedule: true,
           reservations: true,
           reviews: {
             include: {
@@ -108,7 +109,6 @@ export const getPub = queryField('pub', {
               }
             }
           },
-          schedules: true,
           waiters: true
         }
       })
