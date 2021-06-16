@@ -137,7 +137,7 @@ export const Schedule = objectType({
   definition(t) {
     t.int('id')
     t.int('pubId')
-    t.int('dayOfWeek')
+    t.string('dayOfWeek')
     t.string('timeStart')
     t.string('timeEnd')
     t.field('pub', { type: 'Pub' })
