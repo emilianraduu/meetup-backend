@@ -20,6 +20,9 @@ export const friends = extendType({
             data: {
               friendId: friendId,
               userId
+            },
+            include: {
+              friend: true
             }
           })
         } catch (e) {
