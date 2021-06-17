@@ -24,7 +24,7 @@ export const locations = extendType({
                 columns
               },
               includes: {
-                table:true,
+                tables: true,
                 reservations: true
               }
             })
@@ -46,7 +46,7 @@ export const locations = extendType({
         columns: intArg()
       },
       async resolve(_parent, { pubId, id, name, rows, columns }, ctx) {
-        if(await findPub(ctx,pubId)) {
+        if (await findPub(ctx, pubId)) {
           try {
             return await ctx.prisma.location.update({
               where: { id },
@@ -54,6 +54,10 @@ export const locations = extendType({
                 rows,
                 name,
                 columns
+              },
+              includes: {
+                tables: true,
+                reservations: true
               }
             })
           } catch (e) {
