@@ -11,6 +11,7 @@ export const me = queryField('me', {
       },
       include: {
         notifications: true,
+        friends: true,
         reservations: {
           include: {
             table: true,

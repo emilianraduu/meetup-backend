@@ -37,6 +37,7 @@ export const user = extendType({
             },
             include: {
               notifications: true,
+              friends: true,
               reservations: {
                 include: {
                   table: true,
@@ -102,6 +103,7 @@ export const user = extendType({
             },
             include: {
               notifications: true,
+              friends: true,
               reservations: {
                 include: {
                   table: true,
@@ -158,6 +160,7 @@ export const user = extendType({
             },
             include: {
               notifications: true,
+              friends: true,
               reservations: {
                 include: {
                   pub: true,
