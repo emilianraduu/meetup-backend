@@ -39,6 +39,14 @@ model User {
   tables              Table[]        @relation("TableWaiter")
   notifications       Notification[] @relation("NotifiedUser")
   waiterNotifications Notification[] @relation("WaiterNotif")
+  friends             Friend[]       @relation("Friend")
+}
+
+model Friend {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  friendId Int
+  friend   User[] @relation(name: "Friend", fields: [friendId], references: [id])
 }
 
 model Pub {
