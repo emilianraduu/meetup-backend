@@ -28,7 +28,7 @@ export const Friend = objectType({
     t.nonNull.int('id')
     t.int('userId')
     t.int('friendId')
-    t.field('friendId', { type: 'User' })
+    t.field('friend', { type: 'User' })
   }
 })
 

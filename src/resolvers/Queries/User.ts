@@ -13,7 +13,11 @@ export const me = queryField('me', {
       },
       include: {
         notifications: true,
-        friends: true,
+        friends: {
+          include: {
+            user: true
+          }
+        },
         reservations: {
           include: {
             table: true,
