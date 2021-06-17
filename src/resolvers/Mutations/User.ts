@@ -39,7 +39,7 @@ export const user = extendType({
               notifications: true,
               friends: {
                 include: {
-                  user: true
+                  friend: true
                 }
               },
               reservations: {
@@ -109,7 +109,7 @@ export const user = extendType({
               notifications: true,
               friends: {
                 include: {
-                  user: true
+                  friend: true
                 }
               },
               reservations: {
@@ -170,7 +170,7 @@ export const user = extendType({
               notifications: true,
               friends: {
                 include: {
-                  user: true
+                  friend: true
                 }
               },
               reservations: {
