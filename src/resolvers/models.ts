@@ -18,6 +18,17 @@ export const User = objectType({
     t.list.field('pubs', { type: 'Pub' })
     t.int('pubId')
     t.list.field('tables', { type: 'Table' })
+    t.list.field('friends', { type: 'Friend' })
+  }
+})
+
+export const Friend = objectType({
+  name: 'Friend',
+  definition(t) {
+    t.nonNull.int('id')
+    t.int('userId')
+    t.int('friendId')
+    t.field('friendId', { type: 'User' })
   }
 })
 
@@ -27,11 +38,11 @@ export const Notification = objectType({
     t.int('id')
     t.int('userId')
     t.int('waiterId')
-    t.field('waiter', {type: 'User'})
+    t.field('waiter', { type: 'User' })
     t.field('user', { type: 'User' })
     t.string('message')
     t.boolean('read')
-    t.field('reservation', {type: 'Reservation'})
+    t.field('reservation', { type: 'Reservation' })
     t.int('reservationId')
   }
 })

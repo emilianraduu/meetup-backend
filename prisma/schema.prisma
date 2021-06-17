@@ -43,10 +43,10 @@ model User {
 }
 
 model Friend {
-  id       Int    @id @default(autoincrement())
+  id       Int  @id @default(autoincrement())
   userId   Int
   friendId Int
-  friend   User[] @relation(name: "Friend", fields: [friendId], references: [id])
+  friend   User @relation(name: "Friend", fields: [friendId], references: [id])
 }
 
 model Pub {
