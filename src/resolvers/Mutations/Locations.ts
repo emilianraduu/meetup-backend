@@ -23,7 +23,7 @@ export const locations = extendType({
                 rows,
                 columns
               },
-              includes: {
+              include: {
                 tables: true,
                 reservations: true
               }
@@ -55,7 +55,7 @@ export const locations = extendType({
                 name,
                 columns
               },
-              includes: {
+              include: {
                 tables: true,
                 reservations: true
               }
