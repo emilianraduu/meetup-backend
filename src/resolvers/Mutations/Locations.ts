@@ -75,12 +75,14 @@ export const locations = extendType({
       },
       async resolve(_parent, { id }, ctx) {
           try {
+            console.log(id)
             return await ctx.prisma.location.delete({
               where: {
                 id,
               },
             })
           } catch (e) {
+            console.log(e)
             handleError(errors.locationNotFound)
           }
         }

@@ -3,6 +3,7 @@ import { findPub, handleError } from '../../utils/helpers'
 import { errors } from '../../utils/constants'
 import moment from 'moment'
 import { sendNotification } from '../index'
+import sgMail from '@sendgrid/mail'
 
 export const reservations = extendType({
   type: 'Mutation',
@@ -31,6 +32,23 @@ export const reservations = extendType({
                 table: true
               }
             })
+            sgMail.setApiKey(process.env.SENDGRID_KEY)
+            const msg = {
+              to: await ctx.prisma.user.findUnique({where: { id: ctx.userId }}).email,
+              from:  'emiradu98@icloud.com',
+              subject: 'You made a reservation!',
+              text: 'You made a reservation',
+              html: '<strong>You made a reservation</strong>',
+              template_id: 'd-c4fa49ac38624b9bb2bb2c86dcc5be15'
+            }
+            sgMail
+              .send(msg)
+              .then(() => {
+                console.log('Email sent')
+              })
+              .catch((error) => {
+                console.error(error)
+              })
             // await ctx.prisma.notification.create({
             //   data: {
             //     waiterId: waiterId,
