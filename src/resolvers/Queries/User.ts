@@ -47,9 +47,9 @@ export const exists = queryField('exists', {
         where: { email: email }
       })
       if (user) {
-        return { exist: true, hasPassword: !!user.password, user: { ...user, email: email} }
+        return { exist: true, hasPassword: !!user.password, user: { ...user, email: email } }
       } else {
-        return { exist: false, user: {email: email, id: -1} }
+        return { exist: false, user: { email: email, id: -1 } }
       }
     } catch (e) {
       handleError(errors.userAlreadyExists)
@@ -62,12 +62,14 @@ export const findUsers = queryField('findUsers', {
   args: {
     email: nonNull(stringArg())
   },
-  async resolve(_parent, {email}, ctx){
+  async resolve(_parent, { email }, ctx) {
     try {
-      return await ctx.prisma.user.findMany({
-        select: {email}
+      const users = await ctx.prisma.user.findMany()
+      return users.filter(user => {
+        return user.email.startsWith(email)
       })
     } catch (e) {
+      console.log(e)
       handleError(errors.userAlreadyExists)
     }
   }
