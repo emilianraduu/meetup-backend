@@ -1,7 +1,8 @@
 import { list, nonNull, queryField, stringArg } from 'nexus'
 import { handleError } from '../../utils/helpers'
 import { errors } from '../../utils/constants'
-import { User } from '../models'
+import { User } from '.prisma/client'
+
 
 export const me = queryField('me', {
   type: 'User',
@@ -67,10 +68,9 @@ export const findUsers = queryField('findUsers', {
   async resolve(_parent, { email }, ctx) {
     try {
       const users = await ctx.prisma.user.findMany()
-      const filteredUsers = users.filter(user => {
+      return users.filter((user: User) => {
         return user.email.startsWith(email)
       })
-      return filteredUsers
     } catch (e) {
       console.log(e)
       handleError(errors.userAlreadyExists)
