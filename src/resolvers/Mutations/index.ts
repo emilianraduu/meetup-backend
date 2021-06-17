@@ -6,6 +6,7 @@ import * as Menu from './Menu'
 import * as Reviews from './Reviews'
 import * as Reservations from './Reservations'
 import * as Tables from './Tables'
+import * as Friends from './Friends'
 
 export const Mutation = {
   ...Users,
@@ -15,5 +16,6 @@ export const Mutation = {
   ...Menu,
   ...Reviews,
   ...Reservations,
-  ...Tables
+  ...Tables,
+  ...Friends
 }
