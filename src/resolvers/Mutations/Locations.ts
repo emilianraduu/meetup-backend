@@ -77,7 +77,7 @@ export const locations = extendType({
           try {
             return await ctx.prisma.location.delete({
               where: {
-                id
+                id,
               },
             })
           } catch (e) {
