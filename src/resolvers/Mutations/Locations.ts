@@ -68,5 +68,22 @@ export const locations = extendType({
         }
       }
     })
+    t.field('deleteLocation', {
+      type: 'Location',
+      args: {
+        id: nonNull(intArg()),
+      },
+      async resolve(_parent, { id }, ctx) {
+          try {
+            return await ctx.prisma.location.delete({
+              where: {
+                id
+              },
+            })
+          } catch (e) {
+            handleError(errors.locationNotFound)
+          }
+        }
+    })
   }
 })

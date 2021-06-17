@@ -1,6 +1,8 @@
 import { extendType, intArg, nonNull, stringArg } from 'nexus'
 import { findPub, handleError } from '../../utils/helpers'
 import { errors } from '../../utils/constants'
+import moment from 'moment'
+import { sendNotification } from '../index'
 
 export const reservations = extendType({
   type: 'Mutation',
@@ -29,14 +31,23 @@ export const reservations = extendType({
                 table: true
               }
             })
-            await ctx.prisma.notification.create({
-              data: {
-                waiterId: waiterId,
-                userId: ctx.userId,
-                reservationId: reservation.id
-              }
+            // await ctx.prisma.notification.create({
+            //   data: {
+            //     waiterId: waiterId,
+            //     userId: ctx.userId,
+            //     reservationId: reservation.id,
+            //     read: false
+            //   }
+            // })
+            const waiter = await ctx.prisma.user.findUnique({
+              where: {id: waiterId}
             })
-            ctx.pubsub.publish('Notificaiton')
+            let message = {
+              app_id: process.env.ONE_SIGNAL_APP_ID,
+              contents: {"en": "A new reservation was made for " + moment(date).format('HH:mm')},
+              email: waiter.email
+            };
+            sendNotification(message)
             return reservation
           //  creare notificare in tabel
           //  trimirere cu ws la waiterId
