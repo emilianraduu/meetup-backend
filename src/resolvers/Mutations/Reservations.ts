@@ -72,9 +72,6 @@ export const reservations = extendType({
             }
             sendNotification(message)
             return reservation
-            //  creare notificare in tabel
-            //  trimirere cu ws la waiterId
-            //  waiterId
           } catch (e) {
             console.log(e)
             handleError(errors.locationNotFound)
