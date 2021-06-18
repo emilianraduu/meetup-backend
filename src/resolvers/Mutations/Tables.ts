@@ -77,6 +77,11 @@ export const tables = extendType({
               include: {
                 waiter: true,
                 location: true,
+                reservations: {
+                  include: {
+                    user: true
+                  }
+                }
               }
             })
           } catch (e) {
