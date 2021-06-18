@@ -24,6 +24,10 @@ export const reviews = extendType({
                 comment,
                 pubId: pubId,
                 anonymous
+              },
+              include: {
+                user: true,
+                pub: true,
               }
             })
             await ctx.prisma.pub.update({
