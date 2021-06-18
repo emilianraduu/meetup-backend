@@ -59,7 +59,7 @@ export const getMyPubs = queryField('myPubs', {
           locations: {
             include: {
               tables: {
-                include: { reservations: true }
+                include: { reservations: true, waiter: true }
               }
             }
           }
@@ -104,7 +104,8 @@ export const getPub = queryField('pub', {
             include: {
               tables: {
                 include: {
-                  reservations: true
+                  reservations: true,
+                  waiter: true
                 }
               }
             }
