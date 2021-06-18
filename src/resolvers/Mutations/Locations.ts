@@ -25,7 +25,11 @@ export const locations = extendType({
               },
               include: {
                 tables: true,
-                reservations: true
+                reservations: {
+                  include: {
+                    user: true
+                  }
+                },
               }
             })
           } catch (e) {
@@ -57,7 +61,11 @@ export const locations = extendType({
               },
               include: {
                 tables: true,
-                reservations: true
+                reservations: {
+                  include: {
+                    user: true
+                  }
+                },
               }
             })
           } catch (e) {

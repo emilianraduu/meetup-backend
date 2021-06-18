@@ -34,7 +34,11 @@ export const me = queryField('me', {
         pub: { include: { locations: true } },
         tables: {
           include: {
-            reservations: true,
+            reservations: {
+              include: {
+                user: true
+              }
+            },
             location: true
           }
         }

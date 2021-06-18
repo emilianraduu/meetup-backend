@@ -12,16 +12,26 @@ export const getPubs = queryField('pubs', {
     maxDistance: intArg(),
     avgRating: intArg()
   },
-  async resolve(_parent, { latitude, longitude, maxDistance,avgRating }, ctx) {
+  async resolve(_parent, { latitude, longitude, maxDistance, avgRating }, ctx) {
     try {
       const pubs = await ctx.prisma.pub.findMany({
         where: { visible: true },
         include: {
-          reservations: true,
+          reservations: {
+            include: {
+              user: true
+            }
+          },
           locations: {
             include: {
               tables: {
-                include: { reservations: true, waiter: true }
+                include: {
+                  reservations: {
+                    include: {
+                      user: true
+                    }
+                  }, waiter: true
+                }
               }
             }
           }
@@ -55,11 +65,21 @@ export const getMyPubs = queryField('myPubs', {
       return await ctx.prisma.pub.findMany({
         where: { ownerId: ctx.userId },
         include: {
-          reservations: true,
+          reservations: {
+            include: {
+              user: true
+            }
+          },
           locations: {
             include: {
               tables: {
-                include: { reservations: true, waiter: true }
+                include: {
+                  reservations: {
+                    include: {
+                      user: true
+                    }
+                  }, waiter: true
+                }
               }
             }
           }
@@ -85,7 +105,11 @@ export const getPub = queryField('pub', {
         where: { id },
         include: {
           schedule: true,
-          reservations: true,
+          reservations: {
+            include: {
+              user: true
+            }
+          },
           reviews: {
             include: {
               user: true
@@ -104,7 +128,11 @@ export const getPub = queryField('pub', {
             include: {
               tables: {
                 include: {
-                  reservations: true,
+                  reservations: {
+                    include: {
+                      user: true
+                    }
+                  },
                   waiter: true
                 }
               }

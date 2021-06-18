@@ -42,14 +42,18 @@ export const reservations = extendType({
               html: '<strong>You made a reservation</strong>',
               template_id: 'd-c4fa49ac38624b9bb2bb2c86dcc5be15'
             }
-            sgMail
-              .send(msg)
-              .then(() => {
-                console.log('Email sent')
-              })
-              .catch((error) => {
-                console.error(error)
-              })
+            try {
+              sgMail
+                .send(msg)
+                .then(() => {
+                  console.log('Email sent')
+                })
+                .catch((error) => {
+                  console.error(error)
+                })
+            } catch(e){
+              console.log(e)
+            }
             // await ctx.prisma.notification.create({
             //   data: {
             //     waiterId: waiterId,
@@ -98,6 +102,7 @@ export const reservations = extendType({
             }
           })
         }catch (e){
+          console.log(e)
           handleError(errors.reservationNotFound)
         }
       }

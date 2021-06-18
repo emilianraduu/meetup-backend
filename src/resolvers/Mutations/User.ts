@@ -58,7 +58,11 @@ export const user = extendType({
               pub: { include: { locations: true } },
               tables: {
                 include: {
-                  reservations: true,
+                  reservations: {
+                    include: {
+                      user: true
+                    }
+                  },
                   location: true
                 }
               }
@@ -128,7 +132,11 @@ export const user = extendType({
               pub: { include: { locations: true } },
               tables: {
                 include: {
-                  reservations: true,
+                  reservations: {
+                    include: {
+                      user: true
+                    }
+                  },
                   location: true
                 }
               }
@@ -189,7 +197,11 @@ export const user = extendType({
               pub: true,
               tables: {
                 include: {
-                  reservations: true,
+                  reservations: {
+                    include: {
+                      user: true
+                    }
+                  },
                   location: true
                 }
               }
@@ -251,7 +263,11 @@ export const user = extendType({
               pub: { include: { locations: true } },
               tables: {
                 include: {
-                  reservations: true,
+                  reservations: {
+                    include: {
+                      user: true
+                    }
+                  },
                   location: true
                 }
               }
