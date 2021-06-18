@@ -46,6 +46,7 @@ model Friend {
   id       Int  @id @default(autoincrement())
   userId   Int
   friendId Int
+  createdAt       DateTime      @default(now())
   friend   User @relation(name: "Friend", fields: [friendId], references: [id])
 }
 
