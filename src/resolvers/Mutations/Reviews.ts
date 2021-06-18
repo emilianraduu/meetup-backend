@@ -39,6 +39,8 @@ export const reviews = extendType({
             })
             return review
           } catch (e) {
+            console.log(e)
+
             handleError(errors.scheduleAlreadyExists)
           }
         } else {

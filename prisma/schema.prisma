@@ -171,7 +171,7 @@ model Review {
   pubId     Int
   userId    Int
   rating    Int
-  comment   String
+  comment   String?
   user      User     @relation(name: "Reviewer", fields: [userId], references: [id])
   pub       Pub      @relation(name: "ReviewedPub", fields: [pubId], references: [id])
   createdAt DateTime @default(now())
