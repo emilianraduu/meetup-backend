@@ -167,6 +167,7 @@ export const Reservation = objectType({
     t.string('date')
     t.int('userId')
     t.boolean('finished')
+    t.boolean('confirmed')
     t.field('user', { type: 'User' })
     t.int('tableId')
     t.field('table', { type: 'Table' })

@@ -1,4 +1,4 @@
-import { extendType, intArg, nonNull, stringArg } from 'nexus'
+import { booleanArg, extendType, intArg, nonNull, stringArg } from 'nexus'
 import { findPub, handleError } from '../../utils/helpers'
 import { errors } from '../../utils/constants'
 import moment from 'moment'
@@ -33,10 +33,10 @@ export const reservations = extendType({
               }
             })
             sgMail.setApiKey(process.env.SENDGRID_KEY)
-            const usr = await ctx.prisma.user.findUnique({where: { id: ctx.userId }})
+            const usr = await ctx.prisma.user.findUnique({ where: { id: ctx.userId } })
             const msg = {
               to: usr.email,
-              from:  'emiradu98@icloud.com',
+              from: 'emiradu98@icloud.com',
               subject: 'You made a reservation!',
               text: 'You made a reservation',
               html: '<strong>You made a reservation</strong>',
@@ -59,24 +59,46 @@ export const reservations = extendType({
             //   }
             // })
             const waiter = await ctx.prisma.user.findUnique({
-              where: {id: waiterId}
+              where: { id: waiterId }
             })
             let message = {
               app_id: process.env.ONE_SIGNAL_APP_ID,
-              contents: {"en": "A new reservation was made for " + moment(date).format('HH:mm')},
+              contents: { 'en': 'A new reservation was made for ' + moment(date).format('HH:mm') },
               email: waiter.email
-            };
+            }
             sendNotification(message)
             return reservation
-          //  creare notificare in tabel
-          //  trimirere cu ws la waiterId
-          //  waiterId
+            //  creare notificare in tabel
+            //  trimirere cu ws la waiterId
+            //  waiterId
           } catch (e) {
             console.log(e)
             handleError(errors.locationNotFound)
           }
         } else {
           handleError(errors.pubNotFound)
+        }
+      }
+    })
+    t.field('updateReservation', {
+      type: 'Reservation',
+      args: {
+        finished: booleanArg(),
+        confirmed: booleanArg(),
+        id: nonNull(intArg())
+      },
+      async resolve(_parent, { id, finished, confirmed }, ctx) {
+        try {
+          return await ctx.prisma.reservation.update({
+            where: {id},
+            data: {
+              finished,
+              confirmed,
+              id
+            }
+          })
+        }catch (e){
+          handleError(errors.reservationNotFound)
         }
       }
     })

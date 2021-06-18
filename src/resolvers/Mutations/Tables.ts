@@ -51,34 +51,49 @@ export const tables = extendType({
         }
       }
     })
-    // t.field('updateTable', {
-    //   type: 'Table',
-    //   args: {
-    //     dayOfWeek: stringArg(),
-    //     timeStart: stringArg(),
-    //     timeEnd: stringArg(),
-    //     pubId: nonNull(intArg()),
-    //     id: nonNull(intArg())
-    //   },
-    //   async resolve(_parent, { id, pubId, dayOfWeek, timeStart, timeEnd }, ctx) {
-    //     const pub = await findPub(ctx, pubId)
-    //     if (pub?.ownerId === ctx.userId) {
-    //       try {
-    //         return await ctx.prisma.schedule.update({
-    //           where: { id },
-    //           data: {
-    //             dayOfWeek,
-    //             timeStart,
-    //             timeEnd
-    //           }
-    //         })
-    //       } catch (e) {
-    //         handleError(errors.scheduleAlreadyExists)
-    //       }
-    //     } else {
-    //       handleError(errors.pubNotFound)
-    //     }
-    //   }
-    // })
+    t.field('updateTable', {
+      type: 'Table',
+      args: {
+        id: nonNull(intArg()),
+        count: intArg(),
+        blocked: booleanArg(),
+        reason: stringArg(),
+        position: intArg(),
+        name: stringArg(),
+        waiterId: intArg(),
+      },
+      async resolve(_parent, { id, count, blocked, reason, position, name, waiterId }, ctx) {
+          try {
+            return await ctx.prisma.table.update({
+              where: { id },
+              data: {
+                count,
+                blocked,
+                reason,
+                position,
+                name,
+                waiterId
+              }
+            })
+          } catch (e) {
+            handleError(errors.scheduleAlreadyExists)
+          }
+      }
+    })
+    t.field('deleteTable', {
+      type: 'Table',
+      args: {
+        id: nonNull(intArg()),
+      },
+      async resolve(_parent, { id }, ctx) {
+        try {
+          return await ctx.prisma.table.delete({
+            where: { id },
+          })
+        } catch (e) {
+          handleError(errors.scheduleAlreadyExists)
+        }
+      }
+    })
   }
 })

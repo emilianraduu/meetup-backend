@@ -127,7 +127,7 @@ model Reservation {
   pubId        Int
   date         DateTime
   finished     Boolean       @default(false)
-  endHour      String?
+  confirmed    Boolean       @default(false)
   userId       Int
   user         User          @relation(name: "UserReservation", fields: [userId], references: [id])
   location     Location      @relation(name: "LocationReservation", fields: [locationId], references: [id])
