@@ -73,7 +73,21 @@ export const findUsers = queryField('findUsers', {
     try {
       const users = await ctx.prisma.user.findMany()
       return users.filter((user: User) => {
-        return user.email.startsWith(email)
+        return user.email.startsWith(email) && user.id !== ctx.userId
+      })
+    } catch (e) {
+      console.log(e)
+      handleError(errors.userAlreadyExists)
+    }
+  }
+})
+
+export const findFriends = queryField('findFriends', {
+  type: list('Friend'),
+  async resolve(_parent, _args , ctx) {
+    try {
+      return await ctx.prisma.friend.findMany({
+        where: {userId: ctx.userId}
       })
     } catch (e) {
       console.log(e)

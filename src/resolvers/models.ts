@@ -29,6 +29,7 @@ export const Friend = objectType({
     t.int('userId')
     t.int('friendId')
     t.field('friend', { type: 'User' })
+    t.field('user', { type: 'User' })
   }
 })
 
