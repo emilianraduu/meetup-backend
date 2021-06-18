@@ -87,7 +87,10 @@ export const findFriends = queryField('findFriends', {
   async resolve(_parent, _args , ctx) {
     try {
       return await ctx.prisma.friend.findMany({
-        where: {userId: ctx.userId}
+        where: {userId: ctx.userId},
+        include: {
+          friend: true
+        }
       })
     } catch (e) {
       console.log(e)
