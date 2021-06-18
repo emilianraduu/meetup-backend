@@ -21,7 +21,7 @@ export const getPubs = queryField('pubs', {
           locations: {
             include: {
               tables: {
-                include: { reservations: true }
+                include: { reservations: true, waiter: true }
               }
             }
           }
