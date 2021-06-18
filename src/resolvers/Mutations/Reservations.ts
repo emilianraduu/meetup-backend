@@ -33,8 +33,9 @@ export const reservations = extendType({
               }
             })
             sgMail.setApiKey(process.env.SENDGRID_KEY)
+            const usr = await ctx.prisma.user.findUnique({where: { id: ctx.userId }})
             const msg = {
-              to: await ctx.prisma.user.findUnique({where: { id: ctx.userId }}).email,
+              to: usr.email,
               from:  'emiradu98@icloud.com',
               subject: 'You made a reservation!',
               text: 'You made a reservation',
