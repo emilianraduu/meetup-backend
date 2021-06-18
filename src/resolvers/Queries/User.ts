@@ -1,6 +1,6 @@
 import { list, nonNull, queryField, stringArg } from 'nexus'
 import { handleError } from '../../utils/helpers'
-import { errors } from '../../utils/constants'
+import { errors, user_status } from '../../utils/constants'
 import { User } from '.prisma/client'
 
 
@@ -73,7 +73,7 @@ export const findUsers = queryField('findUsers', {
     try {
       const users = await ctx.prisma.user.findMany()
       return users.filter((user: User) => {
-        return user.email.startsWith(email) && user.id !== ctx.userId
+        return user.email.startsWith(email) && user.id !== ctx.userId && user.status === user_status.client
       })
     } catch (e) {
       console.log(e)
